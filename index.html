@@ -256,6 +256,111 @@
       color: var(--accent);
     }
 
+    /* İpucu bölməsi üçün əlavə stil */
+.cipher-box {
+  border-radius: 12px;
+  border: 1px solid rgba(248, 250, 252, 0.15);
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.75);
+  margin-bottom: 12px;
+}
+
+.cipher-label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.cipher-text {
+  font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.28em;
+  text-align: center;
+  padding: 10px 4px;
+  border-radius: 8px;
+  background: radial-gradient(circle at 0 0, rgba(244, 193, 92, 0.18), transparent 60%);
+}
+
+.clue-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.clue-input-row input {
+  flex: 1 1 140px;
+  min-width: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  outline: none;
+}
+
+.clue-input-row input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(244, 193, 92, 0.5);
+}
+
+.clue-input-row button {
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  padding: 8px 16px;
+  background: radial-gradient(circle at 0 0, rgba(244, 193, 92, 0.32), transparent 60%);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.clue-input-row button:hover {
+  box-shadow: 0 0 14px rgba(244, 193, 92, 0.45);
+}
+
+.clue-hint {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.clue-result {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.clue-result.ok {
+  color: #bbf7d0;
+}
+
+.clue-result.err {
+  color: #fecaca;
+}
+
+.qr-wrapper {
+  margin-top: 14px;
+  text-align: center;
+  display: none;
+}
+
+.qr-wrapper img {
+  max-width: 260px;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 0 22px rgba(0, 0, 0, 0.75);
+  opacity: 0.96;
+}
+
+.qr-caption {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+    
     @media (max-width: 600px) {
       .card {
         padding: 20px 14px;
@@ -332,6 +437,9 @@
       </button>
       <button class="evidence-btn" data-doc="doc-statement-malik">
   <span class="index">15</span> Şübhəli ifadəsi – Malik Bilgin
+</button>
+      <button class="evidence-btn" data-doc="doc-clue">
+  <span class="index">16</span> İpucu
 </button>
     </div>
 
@@ -502,6 +610,50 @@
     "
   />
 </div>
+      <!-- 16: Vigenere İpucu -->
+<div class="doc" id="doc-clue">
+  <div class="doc-title">16 · İpucu</div>
+
+  <div class="cipher-box">
+    <div class="cipher-label">
+      Şifrəli mətn:
+    </div>
+    <div class="cipher-text">
+      RCJUR
+    </div>
+    <div class="clue-hint">
+      🔐 Məsləhət: Kripto lab səhifəsindən istifadə edə bilərsən.
+      Açar sözü kitabla bağlıdır (<b>KITAB</b>).
+    </div>
+  </div>
+
+  <div class="clue-input-row">
+    <input
+      id="clue-answer"
+      type="text"
+      placeholder="Buraya açdığın sözü yaz..."
+      autocomplete="off"
+    />
+    <button id="check-clue" type="button">
+      Cavabı yoxla
+    </button>
+  </div>
+
+  <div id="clue-result" class="clue-result"></div>
+
+  <div id="qr-wrapper" class="qr-wrapper">
+    <img
+      src="ipucu-telefon danisigi.png"
+      alt="Gizli QR ipucu"
+    />
+    <div class="qr-caption">
+      ✅ Şifrəni düzgün açdın. Bu QR kod növbəti mərhələyə aparır.
+    </div>
+  </div>
+</div>
+
+
+      
       
     </div>
   </div>
@@ -530,7 +682,44 @@
         }
       });
     });
-  </script>
+
+const CLUE_ANSWER = "huquq";
+
+  const answerInput = document.getElementById("clue-answer");
+  const checkButton = document.getElementById("check-clue");
+  const clueResult = document.getElementById("clue-result");
+  const qrWrapper = document.getElementById("qr-wrapper");
+
+  if (checkButton) {
+    checkButton.addEventListener("click", () => {
+      if (!answerInput) return;
+      const value = (answerInput.value || "")
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "");
+
+      if (!value) {
+        clueResult.textContent = "Əvvəl cavabı yaz.";
+        clueResult.className = "clue-result err";
+        return;
+      }
+
+      if (value === CLUE_ANSWER) {
+        clueResult.textContent = "Düzgündür! Şifrənin cavabı ‘HUQUQ’dur.";
+        clueResult.className = "clue-result ok";
+        if (qrWrapper) {
+          qrWrapper.style.display = "block";
+        }
+      } else {
+        clueResult.textContent = "Uyğun gəlmədi. Bir daha cəhd et – bəlkə açarı səhv tətbiq etmisən?";
+        clueResult.className = "clue-result err";
+      }
+    });
+  }
+</script>
+    
+  
 
 </body>
 </html>
