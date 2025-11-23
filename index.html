@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hüquq nədir? · Fon səhifə</title>
+  <title>Hüquq nədir? · Detektiv Arxiv</title>
   <style>
     :root {
       --bg: #02010a;
       --text-main: #fef3c7;
       --border-accent: rgba(244, 193, 92, 0.25);
+      --accent: #f4c15c;
+      --accent-soft: rgba(244, 193, 92, 0.12);
     }
 
     * {
@@ -61,7 +63,7 @@
       filter: drop-shadow(0 0 14px rgba(244, 193, 92, 0.85));
     }
 
-    /* Məzmun üçün boş card (istəsən içini doldurarsan) */
+    /* Kart – əsas konteyner */
     .card {
       position: relative;
       z-index: 1;
@@ -71,15 +73,110 @@
       padding: 32px 24px;
       border-top: 1px solid var(--border-accent);
       border-bottom: 1px solid var(--border-accent);
-
-      /* şüşə effekti çox zəif – istəsən tam transparan da edə bilərsən */
       background: rgba(20, 30, 60, 0.12);
       backdrop-filter: blur(14px);
+    }
+
+    .card h1 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card p.lead {
+      margin-top: 4px;
+      margin-bottom: 18px;
+      font-size: 0.98rem;
+      opacity: 0.9;
+    }
+
+    /* Sübut düymələri */
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .evidence-btn {
+      position: relative;
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid var(--border-accent);
+      background: radial-gradient(circle at 0 0, var(--accent-soft), transparent 55%);
+      color: var(--text-main);
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .evidence-btn span.index {
+      font-weight: 600;
+      margin-right: 6px;
+      opacity: 0.85;
+    }
+
+    .evidence-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(244, 193, 92, 0.2);
+    }
+
+    .evidence-btn.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(244, 193, 92, 0.35);
+      background: radial-gradient(circle at 0 0, rgba(244, 193, 92, 0.25), transparent 60%);
+    }
+
+    /* Sənəd görüntüləyici */
+    .doc-viewer {
+      position: relative;
+      border-radius: 14px;
+      border: 1px dashed rgba(248, 250, 252, 0.15);
+      padding: 16px 18px 20px;
+      background: rgba(3, 7, 18, 0.65);
+      box-shadow: 0 0 22px rgba(15, 23, 42, 0.8) inset;
+    }
+
+    .doc-placeholder {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+
+    .doc {
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-line; /* sonra mətni daha rahat sətir-sətir verə bilək */
+    }
+
+    .doc.active {
+      display: block;
+    }
+
+    .doc-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
     }
 
     @media (max-width: 600px) {
       .card {
         padding: 20px 14px;
+      }
+
+      .card h1 {
+        font-size: 1.4rem;
       }
     }
   </style>
@@ -94,10 +191,172 @@
     <img src="logo.png" alt="Hüquq nədir? Logo" />
   </div>
 
-  <!-- Boş card – digər səhifə üçün kontent bura gələcək -->
+  <!-- Detektiv arxiv kartı -->
   <div class="card">
-    <!-- Buraya yeni səhifənin məzmununu əlavə edə bilərsən -->
+    <h1>Detektiv Arxiv · Derya Güneş işi</h1>
+    <p class="lead">
+      Aşağıdakı bölmələrdən birini seçərək sübut sənədlərini aça bilərsən.
+      Hər sənəd kliklədikcə bu qutuda mistik “arxiv görüntüsü” kimi görünəcək.
+    </p>
+
+    <!-- Sübut düymələri – əvvəlcə yalnız başlıqlar -->
+    <div class="evidence-grid">
+      <button class="evidence-btn" data-doc="doc-overview">
+        <span class="index">01</span> Hadisə xülasəsi və qəzet xəbəri
+      </button>
+      <button class="evidence-btn" data-doc="doc-chat">
+        <span class="index">02</span> Mərhumun yazışmaları (Whatsapp)
+      </button>
+      <button class="evidence-btn" data-doc="doc-interview">
+        <span class="index">03</span> Məşhur müğənni ilə reportaj
+      </button>
+      <button class="evidence-btn" data-doc="doc-bank">
+        <span class="index">04</span> Şübhəlilərin bank çıxarışları
+      </button>
+      <button class="evidence-btn" data-doc="doc-calls">
+        <span class="index">05</span> Telefon danışıqları siyahısı
+      </button>
+      <button class="evidence-btn" data-doc="doc-death">
+        <span class="index">06</span> Ölüm haqqında rəsmi sənəd
+      </button>
+      <button class="evidence-btn" data-doc="doc-puzzle">
+        <span class="index">07</span> Söz tapmaca – gizli ipucu
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-ferit">
+        <span class="index">08</span> Şübhəli ifadəsi – Ferit Akyüz
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-cenk">
+        <span class="index">09</span> Şübhəli ifadəsi – Cenk Uzun
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-murat">
+        <span class="index">10</span> Şübhəli ifadəsi – Murat Gezin
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-melek">
+        <span class="index">11</span> Şübhəli ifadəsi – Melek Şahin
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-muhammed">
+        <span class="index">12</span> Şübhəli ifadəsi – Muhammed Bilgin
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-emrah">
+        <span class="index">13</span> Şübhəli ifadəsi – Emrah Bağcılar
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-demet">
+        <span class="index">14</span> Şübhəli ifadəsi – Demet Güneş
+      </button>
+      <button class="evidence-btn" data-doc="doc-statement-haydar">
+        <span class="index">15</span> Şübhəli ifadəsi – Haydar Kurulmuş
+      </button>
+    </div>
+
+    <!-- Sənəd görüntüləyici – indi boşdur, sənədləri tədricən dolduracağıq -->
+    <div class="doc-viewer">
+      <div class="doc-placeholder" id="doc-placeholder">
+        Sübut arxivinə xoş gəldin. Üstdəki düymələrdən birini seç,
+        sonra isə biz hər sənəd üçün mətni tərcümə edib bu hissədə “mistik arxiv sənədi”
+        kimi göstərəcəyik.
+      </div>
+
+      <!-- 01: Hadisə xülasəsi və qəzet xəbəri -->
+      <div class="doc" id="doc-overview">
+        <div class="doc-title">01 · Hadisə xülasəsi və qəzet xəbəri</div>
+        <!-- Buraya sonra mətni yerləşdirəcəyik -->
+      </div>
+
+      <!-- 02: Yazışmalar -->
+      <div class="doc" id="doc-chat">
+        <div class="doc-title">02 · Mərhumun yazışmaları</div>
+      </div>
+
+      <!-- 03: Reportaj -->
+      <div class="doc" id="doc-interview">
+        <div class="doc-title">03 · Xüsusi reportaj</div>
+      </div>
+
+      <!-- 04: Bank çıxarışları -->
+      <div class="doc" id="doc-bank">
+        <div class="doc-title">04 · Bank sənədləri</div>
+      </div>
+
+      <!-- 05: Telefon danışıqları -->
+      <div class="doc" id="doc-calls">
+        <div class="doc-title">05 · Telefon danışıqları</div>
+      </div>
+
+      <!-- 06: Ölüm sənədi -->
+      <div class="doc" id="doc-death">
+        <div class="doc-title">06 · Ölüm haqqında rəsmi sənəd</div>
+      </div>
+
+      <!-- 07: Tapmaca -->
+      <div class="doc" id="doc-puzzle">
+        <div class="doc-title">07 · Söz tapmaca ipucusu</div>
+      </div>
+
+      <!-- 08–15: İfadələr -->
+      <div class="doc" id="doc-statement-ferit">
+        <div class="doc-title">08 · Şübhəli ifadəsi – Ferit Akyüz</div>
+      </div>
+
+      <div class="doc" id="doc-statement-cenk">
+        <div class="doc-title">09 · Şübhəli ifadəsi – Cenk Uzun</div>
+      </div>
+
+      <div class="doc" id="doc-statement-murat">
+        <div class="doc-title">10 · Şübhəli ifadəsi – Murat Gezin</div>
+      </div>
+
+      <div class="doc" id="doc-statement-melek">
+        <div class="doc-title">11 · Şübhəli ifadəsi – Melek Şahin</div>
+      </div>
+
+      <div class="doc" id="doc-statement-muhammed">
+        <div class="doc-title">12 · Şübhəli ifadəsi – Muhammed Bilgin</div>
+      </div>
+
+      <div class="doc" id="doc-statement-emrah">
+        <div class="doc-title">13 · Şübhəli ifadəsi – Emrah Bağcılar</div>
+      </div>
+
+      <div class="doc" id="doc-statement-demet">
+        <div class="doc-title">14 · Şübhəli ifadəsi – Demet Güneş</div>
+      </div>
+
+      <div class="doc" id="doc-statement-haydar">
+        <div class="doc-title">15 · Şübhəli ifadəsi – Haydar Kurulmuş</div>
+      </div>
+    </div>
   </div>
+
+  <script>
+    // Düymələri klikləyəndə uyğun sənədi açmaq üçün kiçik script
+    const buttons = document.querySelectorAll(".evidence-btn");
+    const docs = document.querySelectorAll(".doc");
+    const placeholder = document.getElementById("doc-placeholder");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-doc");
+        const targetDoc = document.getElementById(targetId);
+
+        // aktiv düyməni dəyiş
+        buttons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        // placeholder-i gizlət
+        if (placeholder) {
+          placeholder.style.display = "none";
+        }
+
+        // bütün sənədləri gizlət
+        docs.forEach((doc) => doc.classList.remove("active"));
+
+        // hədəf sənədi göstər
+        if (targetDoc) {
+          targetDoc.classList.add("active");
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
