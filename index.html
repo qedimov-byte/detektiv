@@ -683,7 +683,7 @@
       });
     });
 
-const CLUE_ANSWER = "Telefon danışığı";
+const CLUE_ANSWER = "telefon danışığı".toLowerCase().replace(/\s+/g, "");
 
   const answerInput = document.getElementById("clue-answer");
   const checkButton = document.getElementById("check-clue");
@@ -693,6 +693,7 @@ const CLUE_ANSWER = "Telefon danışığı";
   if (checkButton) {
     checkButton.addEventListener("click", () => {
       if (!answerInput) return;
+
       const value = (answerInput.value || "")
         .toString()
         .trim()
@@ -714,6 +715,9 @@ const CLUE_ANSWER = "Telefon danışığı";
       } else {
         clueResult.textContent = "Uyğun gəlmədi. Bir daha cəhd et – bəlkə açarı səhv tətbiq etmisən?";
         clueResult.className = "clue-result err";
+        if (qrWrapper) {
+          qrWrapper.style.display = "none";
+        }
       }
     });
   }
