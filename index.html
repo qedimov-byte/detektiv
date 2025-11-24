@@ -370,6 +370,36 @@
         font-size: 1.4rem;
       }
     }
+  
+  /* Logo altı Kripto Lab keçidi */
+.crypto-link-header {
+  margin-top: 6px;
+}
+
+.crypto-link-header a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 193, 92, 0.8);
+  background: radial-gradient(circle at 0 0, rgba(244, 193, 92, 0.18), transparent 60%);
+  color: var(--text-main);
+  font-size: 0.8rem;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.crypto-link-header a span.icon {
+  font-size: 0.9rem;
+}
+
+.crypto-link-header a:hover {
+  box-shadow: 0 0 12px rgba(244, 193, 92, 0.5);
+  transform: translateY(-1px);
+}
+  
   </style>
 </head>
 <body>
@@ -381,8 +411,20 @@
   <div class="logo-container">
     <img src="logo.png" alt="Hüquq nədir? Logo" />
     <div class="detective-title">DETEKTİV OYUNU</div>
+
+    <!-- Kripto Lab keçidi – DETEKTİV OYUNU altı -->
+    <div class="crypto-link-header">
+      <!-- Fayl adını özündə necə saxlamısansa onu yaz: kripto-lab.html, crypto.html və s. -->
+      <a href="https://qedimov-byte.github.io/az-crypto/" target="_blank" rel="noopener">
+        <span class="icon">🧩</span>
+        <span>Kripto Lab · Şifrələri aç</span>
+      </a>
+    </div>
   </div>
 
+
+
+  
   <!-- Detektiv arxiv kartı -->
   <div class="card">
     <h1>Detektiv Arxiv · Derya Güneş işi</h1>
